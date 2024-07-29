@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7f6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #00796b;
+    }
+    #uploadForm {
+      margin-bottom: 20px;
+    }
+    input[type="file"] {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #00796b;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+    #result {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      background-color: #fafafa;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Receipt Digitization</h1>
+    <form id="uploadForm">
+      <input type="file" id="receiptFile" accept="image/*">
+      <button type="button" onclick="uploadFile()">Upload</button>
+    </form>
+    <div id="result">Receipt content will appear here.</div>
+  </div>
+
+  <script>
+    function uploadFile() {
+      var fileInput = document.getElementById('receiptFile');
+      var file = fileInput.files[0];
+      if (!file) {
+        alert('Please select a file.');
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var blob = Utilities.newBlob(e.target.result, file.type, file.name);
+
+        google.script.run.withSuccessHandler(displayResult).processReceipt(blob);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function displayResult(result) {
+      document.getElementById('result').innerText = result;
+    }
+  </script>
+</body>
+</html>
