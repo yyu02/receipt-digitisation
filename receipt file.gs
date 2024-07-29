@@ -1,7 +1,7 @@
 function extractOCR() {
-    var folderIterator = DriveApp.getFoldersByName('_fish_');
+    var folderIterator = DriveApp.getFoldersByName('records');
     if (!folderIterator.hasNext()) {
-      throw new Error("Folder '_fish_' not found");
+      throw new Error("Folder 'records' found");
     }
 
     var workingDir = folderIterator.next();
